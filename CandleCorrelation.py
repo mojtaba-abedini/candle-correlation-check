@@ -127,3 +127,50 @@ finalResult=pd.DataFrame(finalResult)
 finalResult.to_csv('output.csv')
 print(finalResult)
 print ('The output save in output.csv file ...')
+
+
+def graph_data_ohlc(dataset):
+    fig = plt.figure(figsize=(16,8))
+    ax1 = plt.subplot2grid((1,1), (0,0))
+    closep=dataset[:,[4]]
+    highp=dataset[:,[2]]
+    lowp=dataset[:,[3]]
+    openp=dataset[:,[1]]
+    date=range(len(closep))
+
+    x = 0
+    y = len(date)
+    ohlc = []
+    while x < y:
+        append_me = date[x], openp[x], highp[x], lowp[x], closep[x]
+        ohlc.append(append_me)
+        x+=1
+    candlestick_ohlc(ax1, ohlc, width=0.4, colorup='#26a69a', colordown='#ef5350')
+    for label in ax1.xaxis.get_ticklabels():
+        label.set_rotation(45)
+    ax1.xaxis.set_major_locator(mticker.MaxNLocator(10))
+    ax1.grid(True)
+    plt.xlabel('Candle')
+    plt.ylabel('Price')
+    plt.title('XAUUSD')
+
+    plt.subplots_adjust(left=0.09, bottom=0.20, right=0.94, top=0.90, wspace=0.2, hspace=0)
+    plt.show()
+    
+    
+candleShow = 80
+ohlc_data=[]
+for i in final[:-1]:
+    ohlc_data=[]
+    print(df.iloc[i]['time'])
+    for n in range(candleShow):
+      
+        ohlc_data.append(df.iloc[i])
+        i +=1
+        n +=1
+      
+    ohlc_data=pd.DataFrame(ohlc_data)
+    graph_data_ohlc(ohlc_data.tail(80).values)
+
+
+
